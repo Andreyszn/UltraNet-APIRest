@@ -10,7 +10,6 @@ public class UltraNetApplication {
 		SpringApplication.run(UltraNetApplication.class, args);
 	}
 
-
 	// Aqui paso David
 	// Dios te ama bro
 	// pito dame por favor
@@ -19,4 +18,5 @@ public class UltraNetApplication {
 	// David guapo
 	// aaaa
 	// .i.
+	// Luis rico .i.
 }
