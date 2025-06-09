@@ -1,4 +1,8 @@
 package Proyecto.UltraNet.Repository;
 
-public interface UserJpaReposity {
+import Proyecto.UltraNet.Model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserJpaReposity extends JpaRepository <User, Integer> {
+
 }
