@@ -9,8 +9,8 @@ public class UserRepository extends CRUDMemory <User> {
     public UserRepository() {
         data.add(new User(1, "Luis", "tocayo@gmail.com", "admin", "admin123"));
         data.add(new User(2, "Andrey", "blaith@hotmail.com", "user", "user123"));
-        data.add(new User(2, "Charlie", "Charlie@email.com", "client", "client123"));
-        data.add(new User(2, "David", "zander@yopmail.com", "client", "client124"));
+        data.add(new User(3, "Charlie", "Charlie@email.com", "client", "client123"));
+        data.add(new User(4, "David", "zander@yopmail.com", "client", "client124"));
     }
     
     @Override
