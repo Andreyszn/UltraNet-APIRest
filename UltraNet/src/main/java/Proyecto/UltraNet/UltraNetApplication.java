@@ -10,7 +10,4 @@ public class UltraNetApplication {
 		SpringApplication.run(UltraNetApplication.class, args);
 	}
 
-
-	// Aqui paso David
-
 }
