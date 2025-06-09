@@ -23,6 +23,12 @@ public class UserRepository extends CRUDMemory <User> {
                 if (user.getType()!=null) {
                     element.setType(user.getType());
                 }
+                if (user.getEmail() != null) {
+                    element.setEmail(user.getEmail());
+                }
+                if (user.getPassword() != null) {
+                    element.setPassword(user.getPassword());
+                }
                 return element;
             }
         }
