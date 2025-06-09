@@ -11,11 +11,4 @@ public class UltraNetApplication {
 	}
 
 
-	// Aqui paso David
-	// Dios te ama bro
-	// pito dame por favor
-	// David vuelve mi vida
-	// Aqui paso el diablo
-	// David guapo
-	//aaaa
 }
