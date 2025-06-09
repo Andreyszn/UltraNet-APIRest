@@ -8,6 +8,11 @@ public class UltraNetApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(UltraNetApplication.class, args);
+		new UserController;
 	}
 
+
+	// Aqui paso David
+	// Dios te ama bro
+	
 }
