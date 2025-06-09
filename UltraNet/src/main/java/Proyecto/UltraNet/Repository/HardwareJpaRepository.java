@@ -1,5 +1,4 @@
 package Proyecto.UltraNet.Repository;
 
-public class UserRepository {
-
+public interface HardwareJpaRepository {
 }

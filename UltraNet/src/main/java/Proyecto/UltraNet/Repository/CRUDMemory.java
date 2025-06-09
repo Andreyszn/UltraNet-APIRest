@@ -52,8 +52,8 @@ public abstract class CRUDMemory <T extends Identifiable> implements ICRUD <T, I
         return null;
     }
 
-//    @Override
-//    public Integer getId() {
-//        return 0;
-//    }
+    @Override
+    public Integer getId() {
+        return 0;
+    }
 }

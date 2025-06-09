@@ -11,6 +11,6 @@ public interface ICRUD <T,integer>{
     public T delete(Integer id);
     public T search(Integer id);
 
-    //Integer getId();
+    Integer getId();
 
 }
