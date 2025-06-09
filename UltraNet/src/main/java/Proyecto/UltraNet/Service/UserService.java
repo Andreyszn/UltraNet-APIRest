@@ -1,5 +1,6 @@
 package Proyecto.UltraNet.Service;
 
+import Proyecto.UltraNet.Model.User;
 import Proyecto.UltraNet.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

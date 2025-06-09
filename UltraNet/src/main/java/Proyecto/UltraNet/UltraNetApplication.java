@@ -9,9 +9,4 @@ public class UltraNetApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UltraNetApplication.class, args);
 	}
-
-
-	// Aqui paso David
-	// Dios te ama bro
-	
 }
