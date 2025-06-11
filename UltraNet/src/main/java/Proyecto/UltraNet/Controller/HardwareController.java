@@ -1,5 +1,12 @@
 package Proyecto.UltraNet.Controller;
 
+import Proyecto.UltraNet.Model.Hardware;
+import Proyecto.UltraNet.Service.HardwareService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/hardware")
 public class HardwareController {
@@ -9,42 +16,21 @@ public class HardwareController {
 
     private ArrayList<Hardware> hardwares;
 
-
-    @getMapping
-    public ArrayList<Hardware> getAll(){return service.getAll();}
+    @GetMapping
+    public ArrayList<Hardware> getAll() { return service.getAll(); }
 
     @GetMapping("{id}")
-    public Hardware getHardware(@PathVariable int id){
-
-        return null;
-    }
+    public Hardware getHardware(@PathVariable int id) { return service.searchHardware(id); }
 
     @PostMapping
-    public Hardware postSpace(@RequestBody Hardware hardware){
-
-
-        return null;
-    }
+    public Hardware postHardware(@RequestBody Hardware hardware) { return service.add(hardware); }
 
     @PutMapping
-    public Hardware putSpace(@RequestBody Hardware hardware){
-
-
-        return null;
-    }
+    public Hardware putHardware(@RequestBody Hardware hardware) { return service.updateHardware(hardware); }
 
     @DeleteMapping("{id}")
-    public Hardware deleteSpace(@PathVariable int id){
-
-
-        return null;
-    }
+    public Hardware deleteHardware(@PathVariable int id) { return service.delete(id); }
 
     @PatchMapping
-    public Hardware verifySpace(@RequestBody Hardware hardware){
-
-
-        return null;
-    }
-
+    public Hardware patchHardware(@RequestBody Hardware hardware) { return service.editHardware(hardware); }
 }

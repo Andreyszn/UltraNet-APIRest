@@ -1,22 +1,33 @@
 package Proyecto.UltraNet.Repository;
 
-import UltraNet.Model.Hardware;
+import Proyecto.UltraNet.Model.Hardware;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class HardwareRepository extends CRUDMemory<Hardware>{
 
     public HardwareRepository() {
-        data.add(new Hardware(1,"rtx","grafica","Tarjeta de Video","Nvidea","Pcie 5.0","300 watts",10,40000,"--","--","--","--"))
+        data.add(new Hardware(1,
+                "rtx",
+                "grafica",
+                "Tarjeta de Video",
+                "Nvidea","Pcie 5.0",
+                "300 watts",
+                10,
+                40000,
+                "--",
+                "--",
+                "--",
+                "--"));
     }
 
     @Override
-    Public Hardware edit(Hardware hardware) {
+    public Hardware edit(Hardware hardware) {
         for(Hardware element : data) {
             if (element.getId().intValue() == hardware.getId().intValue()) {
-//                if (space.getId() != 0) {
-//                    element.setId(space.getId());
-//                }
+                if (hardware.getId() != 0) {
+                    element.setId(hardware.getId());
+                }
                 if (hardware.getName() != null) {
                     element.setName(hardware.getName());
                 }
@@ -54,12 +65,9 @@ public class HardwareRepository extends CRUDMemory<Hardware>{
                     element.setStoragePort(hardware.getStoragePort());
                 }
                 return element;
-
             }
         }
         return hardware;
-
-
     }
 
 }

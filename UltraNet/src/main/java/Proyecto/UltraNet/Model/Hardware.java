@@ -1,21 +1,25 @@
 package Proyecto.UltraNet.Model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-//@Entity
+@Entity
 public class Hardware implements Identifiable{
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
     private String name, description, type, brand, conection, power;
     private Integer quantity, price;
     //motherboard
-    private string cpuPort, pciePort,ramPort,storagePort;
+    private String cpuPort, pciePort,ramPort,storagePort;
 
     public Hardware() {
     }
 
-    public Hardware(Integer id, String name, String description, String type, String brand, String conection, String power, Integer quantity, Integer price, string cpuPort, string pciePort, string ramPort, string storagePort) {
+    public Hardware(Integer id, String name, String description, String type, String brand, String conection, String power, Integer quantity, Integer price, String cpuPort, String pciePort, String ramPort, String storagePort) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -104,35 +108,35 @@ public class Hardware implements Identifiable{
         this.price = price;
     }
 
-    public string getCpuPort() {
+    public String getCpuPort() {
         return cpuPort;
     }
 
-    public void setCpuPort(string cpuPort) {
+    public void setCpuPort(String cpuPort) {
         this.cpuPort = cpuPort;
     }
 
-    public string getPciePort() {
+    public String getPciePort() {
         return pciePort;
     }
 
-    public void setPciePort(string pciePort) {
+    public void setPciePort(String pciePort) {
         this.pciePort = pciePort;
     }
 
-    public string getRamPort() {
+    public String getRamPort() {
         return ramPort;
     }
 
-    public void setRamPort(string ramPort) {
+    public void setRamPort(String ramPort) {
         this.ramPort = ramPort;
     }
 
-    public string getStoragePort() {
+    public String getStoragePort() {
         return storagePort;
     }
 
-    public void setStoragePort(string storagePort) {
+    public void setStoragePort(String storagePort) {
         this.storagePort = storagePort;
     }
 
