@@ -1,25 +1,25 @@
 package Proyecto.UltraNet.Model;
 
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
-//import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-//@Entity
+@Entity
 public class Hardware implements Identifiable{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
-    private String name, description, type, brand, conection, power;
-    private Integer quantity, price;
+    private String name, description, type, brand, conection;
+    private Integer quantity, price, power;
     //motherboard
     private String cpuPort, pciePort,ramPort,storagePort;
 
     public Hardware() {
     }
 
-    public Hardware(Integer id, String name, String description, String type, String brand, String conection, String power, Integer quantity, Integer price, String cpuPort, String pciePort, String ramPort, String storagePort) {
+    public Hardware(Integer id, String name, String description, String type, String brand, String conection, Integer power, Integer quantity, Integer price, String cpuPort, String pciePort, String ramPort, String storagePort) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -84,11 +84,11 @@ public class Hardware implements Identifiable{
         this.conection = conection;
     }
 
-    public String getPower() {
+    public Integer getPower() {
         return power;
     }
 
-    public void setPower(String power) {
+    public void setPower(Integer power) {
         this.power = power;
     }
 

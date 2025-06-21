@@ -13,7 +13,7 @@ public class HardwareRepository extends CRUDMemory<Hardware>{
                 "Tarjeta de Video",
                 "Nvidea",
                 "Pcie 5.0",
-                "300 watts",
+                300,
                 10,
                 40000,
                 "--",
