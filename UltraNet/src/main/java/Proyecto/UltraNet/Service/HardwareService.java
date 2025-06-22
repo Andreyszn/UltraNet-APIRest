@@ -35,9 +35,6 @@ public class HardwareService {
 
     public Hardware patchHardware(Hardware hardware) {
         Hardware hardwareBd = repository.findById(hardware.getId()).get();
-//        if (hardwareBd == null) {
-//            return null; // o lanzar excepción
-//        }
 
         if (hardware.getName() != null) {
             hardwareBd.setName(hardware.getName());
@@ -75,7 +72,6 @@ public class HardwareService {
         if (hardware.getStoragePort() != null) {
             hardwareBd.setStoragePort(hardware.getStoragePort());
         }
-
         return repository.save(hardwareBd);
     }
 
