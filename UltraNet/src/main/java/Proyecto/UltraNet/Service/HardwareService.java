@@ -34,10 +34,10 @@ public class HardwareService {
     }
 
     public Hardware patchHardware(Hardware hardware) {
-        Hardware hardwareBd = repository.findById(hardware.getId()).orElse(null);
-        if (hardwareBd == null) {
-            return null; // o lanzar excepción
-        }
+        Hardware hardwareBd = repository.findById(hardware.getId()).get();
+//        if (hardwareBd == null) {
+//            return null; // o lanzar excepción
+//        }
 
         if (hardware.getName() != null) {
             hardwareBd.setName(hardware.getName());
@@ -54,13 +54,13 @@ public class HardwareService {
         if (hardware.getConection() != null) {
             hardwareBd.setConection(hardware.getConection());
         }
-        if (hardware.getPower() != 0) {
+        if (hardware.getPower() != null && hardware.getPower() != 0) {
             hardwareBd.setPower(hardware.getPower());
         }
-        if (hardware.getQuantity() != 0) {
+        if (hardware.getQuantity() != null && hardware.getQuantity() != 0) {
             hardwareBd.setQuantity(hardware.getQuantity());
         }
-        if (hardware.getPrice() != 0) {
+        if (hardware.getPrice() != null && hardware.getPrice() != 0) {
             hardwareBd.setPrice(hardware.getPrice());
         }
         if (hardware.getCpuPort() != null) {
