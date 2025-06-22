@@ -27,7 +27,7 @@ public class UserService {
         }
     }
 
-    public boolean UserExistsById(Integer id) {
+    public boolean userExistsById(Integer id) {
         return repository.existsById(id);
     }
 
@@ -43,6 +43,23 @@ public class UserService {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         }
+    }
+
+    public boolean validPassword(String password){
+        if(password.length()<8 || password.length()>16){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validType(String type){
+        if(type.equalsIgnoreCase("client") || type.equalsIgnoreCase("admin")){
+            return false;
+        }
+//        if(type.equalsIgnoreCase("admin")){
+//            return false;
+//        }
+        return true;
     }
 
     public User editUser(User user) {

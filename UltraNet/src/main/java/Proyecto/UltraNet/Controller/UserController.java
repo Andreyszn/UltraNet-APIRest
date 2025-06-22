@@ -21,7 +21,7 @@ public class UserController {
     public ResponseEntity <?> getAllUsers() {
         users = (ArrayList<User>) service.getAllUsers();
         if (users == null || users.isEmpty()) {
-            return ResponseEntity.status(204).body("No hay usuarios registrados");
+            return ResponseEntity.status(404).body("No hay usuarios registrados");
         }
         return ResponseEntity.ok(users);
     }
@@ -40,26 +40,32 @@ public class UserController {
         if (user.getName() == null || user.getEmail() == null || user.getType() == null || user.getPassword() == null) {
             return ResponseEntity.status(400).body("Error: Todos los campos son obligatorios.");
         }
-        if (service.UserExistsById(user.getId())) {
-            return ResponseEntity.status(400).body("Error: Ya existe un usuario con el ID " + user.getId());
-        }
 
         if (service.userExistsByEmail(user.getEmail())) {
             return ResponseEntity.status(400).body("Error: Ya existe un usuario con el email " + user.getEmail());
+        }
+
+        if(service.validPassword(user.getPassword())){
+            return ResponseEntity.status(400).body("Error: La contraseña debe ser mayor a 8 caracteres y menor a 16 caracteres ");
+        }
+
+        if(service.validType(user.getType())){
+            return ResponseEntity.status(400).body("Error: El espacio type debe ser igual a client o admin");
         }
 
         if (user.getId() != null) {
             return ResponseEntity.status(400).body("Error: No se debe proporcionar un ID al crear un nuevo usuario.");
         }
         User createdUser = service.addUser(user);
-        return ResponseEntity.ok("Usuario creado con éxito: " + createdUser);
+        //return ResponseEntity.ok("Usuario creado con éxito: " + createdUser);
+        return ResponseEntity.ok(createdUser);
     }
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
-        if (service.UserExistsById(user.getId())) {
+        if (service.userExistsById(user.getId())) {
             User updatedUser = service.updateUser(user);
-            return ResponseEntity.ok("Usuario actualizado con éxito: " + updatedUser);
+            return ResponseEntity.ok(updatedUser);
         } else {
             return ResponseEntity.status(404).body("No se encuentra un usuario con el ID " + user.getId());
         }
@@ -67,9 +73,9 @@ public class UserController {
 
     @PatchMapping
     public ResponseEntity <?> editUser (@RequestBody User user){
-        if (service.UserExistsById(user.getId())) {
+        if (service.userExistsById(user.getId())) {
             User editedUser = service.editUser(user);
-            return ResponseEntity.ok("Usuario editado con éxito: " + editedUser);
+            return ResponseEntity.ok(editedUser);
         } else {
             return ResponseEntity.status(404).body("No se encuentra un usuario con el ID " + user.getId());
         }
@@ -77,7 +83,7 @@ public class UserController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
-        if (service.UserExistsById(id)) {
+        if (service.userExistsById(id)) {
             service.deleteUser(id);
             return ResponseEntity.ok("Usuario con ID " + id + " eliminado con éxito.");
         } else {
