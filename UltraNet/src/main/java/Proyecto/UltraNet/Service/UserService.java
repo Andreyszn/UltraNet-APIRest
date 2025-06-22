@@ -1,36 +1,68 @@
 package Proyecto.UltraNet.Service;
 
 import Proyecto.UltraNet.Model.User;
-import Proyecto.UltraNet.Repository.UserRepository;
+import Proyecto.UltraNet.Repository.UserRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
-    UserRepository repository;
+    UserRepositoryJpa repository;
 
-    public ArrayList<User> getAll(){return repository.getAll();}
-
-    public User add(User user){
-        return repository.add(user);
+    public List <User> getAllUsers() {
+        return repository.findAll();
+    }
+    public User addUser(User user) {
+        return repository.save(user);
     }
 
-    public User delete(int id){
-        return repository.delete(id);
+    public User updateUser(User user) {
+        if (repository.existsById(user.getId())) {
+            return repository.save(user);
+        } else {
+            return null;
+        }
     }
 
-    public User searchUser(int id){
-        return repository.search(id);
+    public boolean UserExistsById(Integer id) {
+        return repository.existsById(id);
     }
 
-    public User editUser(User user){
-        return repository.edit(user);
+    public boolean userExistsByEmail(String email) {
+        return repository.existsByEmail(email);
     }
 
-    public User updateUser(User user){
-        return repository.update(user);
+    public User findUserById(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    public void deleteUser(Integer id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
+    }
+
+    public User editUser(User user) {
+        if (repository.existsById(user.getId())) {
+            User userBD = repository.findById(user.getId()).get();
+            if (user.getName() != null) {
+                userBD.setName(user.getName());
+            }
+            if (user.getEmail() != null) {
+                userBD.setEmail(user.getEmail());
+            }
+            if (user.getType() != null) {
+                userBD.setType(user.getType());
+            }
+            if (user.getPassword() != null) {
+                userBD.setPassword(user.getPassword());
+            }
+            return repository.save(userBD);
+        } else {
+            return null;
+        }
     }
 }

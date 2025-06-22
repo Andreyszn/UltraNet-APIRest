@@ -4,9 +4,7 @@ import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Repository.HardwareRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import Proyecto.UltraNet.Repository.HardwareRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

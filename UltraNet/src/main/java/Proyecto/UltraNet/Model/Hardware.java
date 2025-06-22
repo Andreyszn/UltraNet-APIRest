@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Hardware implements Identifiable{
+public class Hardware {
     @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
