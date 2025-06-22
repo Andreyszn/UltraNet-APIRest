@@ -56,6 +56,9 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
+        if (user.getId() == null){
+            return ResponseEntity.status(400).body("Error: El ID del usuario es obligatorio para actualizar.");
+        }
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null || user.getType() == null) {
             return ResponseEntity.status(400).body("Error: Todos los campos son obligatorios.");
         }
@@ -67,9 +70,6 @@ public class UserController {
         }
         if(service.isInvalidType(user.getType())){
             return ResponseEntity.status(400).body("Error: El espacio type debe rellenado con Client o Administrator");
-        }
-        if (user.getId() == null){
-            return ResponseEntity.status(400).body("Error: El ID del usuario es obligatorio para actualizar.");
         }
         User updatedUser = service.updateUser(user);
         return ResponseEntity.ok(updatedUser);
