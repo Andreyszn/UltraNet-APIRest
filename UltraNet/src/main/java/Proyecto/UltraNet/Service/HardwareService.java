@@ -7,31 +7,38 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class HardwareService {
+
     @Autowired
     HardwareRepositoryJpa repository;
 
-    public List<Hardware> getAll(){return repository.findAll();}
+    public List<Hardware> getAll() {
+        return repository.findAll();
+    }
 
-    public Hardware addHardware(Hardware hardware){
+    public Hardware addHardware(Hardware hardware) {
         return repository.save(hardware);
     }
 
-    public Hardware delete(Integer id){
-        if(repository.existsById(id)){
+    public boolean delete(Integer id) {
+        if (repository.existsById(id)) {
             repository.deleteById(id);
+            return true;
         }
-    return null;
+        return false;
     }
 
-    public Hardware searchHardware(Integer id){
-        return repository.findById(id).get();
+    public Hardware searchHardware(Integer id) {
+        return repository.findById(id).orElse(null);
     }
 
-    public Hardware patchHardware(Hardware hardware){
-        Hardware hardwareBd = repository.findById(hardware.getId()).get();
+    public Hardware patchHardware(Hardware hardware) {
+        Hardware hardwareBd = repository.findById(hardware.getId()).orElse(null);
+        if (hardwareBd == null) {
+            return null; // o lanzar excepción
+        }
+
         if (hardware.getName() != null) {
             hardwareBd.setName(hardware.getName());
         }
@@ -68,11 +75,15 @@ public class HardwareService {
         if (hardware.getStoragePort() != null) {
             hardwareBd.setStoragePort(hardware.getStoragePort());
         }
+
         return repository.save(hardwareBd);
     }
 
-    public Hardware putHardware(Hardware hardware){
+    public Hardware putHardware(Hardware hardware) {
         return repository.save(hardware);
     }
 
+    public boolean existsById(Integer id) {
+        return repository.existsById(id);
+    }
 }
