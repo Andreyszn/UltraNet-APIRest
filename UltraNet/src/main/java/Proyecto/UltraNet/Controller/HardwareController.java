@@ -3,34 +3,45 @@ package Proyecto.UltraNet.Controller;
 import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Service.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/hardware")
+@RequestMapping("/hardwares")
 public class HardwareController {
 
     @Autowired
     HardwareService service;
 
-    private ArrayList<Hardware> hardwares;
-
     @GetMapping
-    public ArrayList<Hardware> getAll() { return service.getAll(); }
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.status(201).body(service.getAll());
+    }
 
     @GetMapping("{id}")
-    public Hardware getHardware(@PathVariable int id) { return service.searchHardware(id); }
+    public ResponseEntity<?> getHardware(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.searchHardware(id));
+    }
 
     @PostMapping
-    public Hardware postHardware(@RequestBody Hardware hardware) { return service.add(hardware); }
+    public ResponseEntity<?> postHardware(@RequestBody Hardware hardware) {
+        return ResponseEntity.ok(service.addHardware(hardware));
+    }
 
     @PutMapping
-    public Hardware putHardware(@RequestBody Hardware hardware) { return service.updateHardware(hardware); }
+    public ResponseEntity<?> putHardware(@RequestBody Hardware hardware) {
+        return ResponseEntity.ok(putHardware(hardware));
+    }
 
     @DeleteMapping("{id}")
-    public Hardware deleteHardware(@PathVariable int id) { return service.delete(id); }
+    public ResponseEntity<?> deleteHardware(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.delete(id));
+    }
 
     @PatchMapping
-    public Hardware patchHardware(@RequestBody Hardware hardware) { return service.editHardware(hardware); }
+    public ResponseEntity<?> patchHardware(@RequestBody Hardware hardware) {
+        return ResponseEntity.status(201).body(patchHardware(hardware));
+    }
 }

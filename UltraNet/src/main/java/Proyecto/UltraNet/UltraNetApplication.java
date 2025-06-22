@@ -9,7 +9,4 @@ public class UltraNetApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UltraNetApplication.class, args);
 	}
-
-	// Primera entrega del segundo proyecto de progra
-
 }
