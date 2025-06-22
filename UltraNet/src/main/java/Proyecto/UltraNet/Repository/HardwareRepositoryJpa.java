@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HardwareRepositoryJpa extends JpaRepository<Hardware, Integer> {
-
     Hardware findByName(String name);
     boolean existsByName(String name);
 }

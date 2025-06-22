@@ -15,7 +15,6 @@ public class HardwareController {
     @Autowired
     HardwareService service;
 
-
     @GetMapping
     public ResponseEntity<?> getAll() {
         return ResponseEntity.status(201).body(service.getAll());

@@ -45,20 +45,17 @@ public class UserService {
         }
     }
 
-    public boolean validPassword(String password){
+    public boolean isInvalidPassword(String password){
         if(password.length()<8 || password.length()>16){
             return true;
         }
         return false;
     }
 
-    public boolean validType(String type){
-        if(type.equalsIgnoreCase("client") || type.equalsIgnoreCase("admin")){
+    public boolean isInvalidType(String type){
+        if(type.equalsIgnoreCase("Client") || type.equalsIgnoreCase("Administrator")){
             return false;
         }
-//        if(type.equalsIgnoreCase("admin")){
-//            return false;
-//        }
         return true;
     }
 
