@@ -82,4 +82,6 @@ public class HardwareService {
     public boolean existsById(Integer id) {
         return repository.existsById(id);
     }
+
+    public Hardware findHardwareById(Integer id){ return repository.findById(id)}
 }
