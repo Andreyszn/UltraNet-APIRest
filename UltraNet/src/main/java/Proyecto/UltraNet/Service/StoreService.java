@@ -1,5 +1,6 @@
 package Proyecto.UltraNet.Service;
 
+import Proyecto.UltraNet.Dto.StoreDto;
 import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Model.Store;
 import Proyecto.UltraNet.Model.User;
@@ -33,13 +34,15 @@ public class StoreService {
         return storeRepository.findAll();
     }
 
-    public Store add(Store storeDTO){
-        User user = userService.findUserById(storeDTO.getId());
-        Hardware hardware = hardwareService.findHardwareById(storeDTO.getId());
+    public Store add(StoreDto storeDto){
+        User user = userService.findUserByEmail(storeDto.getUserEmail());
+        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
         Store store = new Store();
         store.setUser(user);
         store.setHardware(hardware);
-        store.setQuantity(storeDTO.getQuantity());
+        store.setQuantity(storeDto.getQuiantity());
+        store.setTotalPrice(storeDto.getTotalPrice());
+        store.setSaleDate(storeDto.getSaleDate());
         return storeRepository.save(store);
     }
 
