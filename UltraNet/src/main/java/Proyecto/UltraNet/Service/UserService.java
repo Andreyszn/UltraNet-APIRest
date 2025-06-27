@@ -1,5 +1,6 @@
 package Proyecto.UltraNet.Service;
 
+import Proyecto.UltraNet.Dto.UserDto;
 import Proyecto.UltraNet.Model.User;
 import Proyecto.UltraNet.Repository.UserRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,23 @@ public class UserService {
     public List <User> getAllUsers() {
         return repository.findAll();
     }
-    public User addUser(User user) {
+
+    public User addUser(UserDto userDto) {
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setType(userDto.getType());
+        user.setPassword(userDto.getPassword());
         return repository.save(user);
     }
 
-    public User updateUser(User user) {
-        if (repository.existsById(user.getId())) {
+    public User updateUser(UserDto userDto) {
+        if (repository.existsById(userDto.getId())) {
+            User user = repository.findById(userDto.getId()).get();
+            user.setName(userDto.getName());
+            user.setEmail(userDto.getEmail());
+            user.setType(userDto.getType());
+            user.setPassword(userDto.getPassword());
             return repository.save(user);
         } else {
             return null;
