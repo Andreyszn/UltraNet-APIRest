@@ -23,14 +23,17 @@ public class StoreController {
 
     @PostMapping
     public ResponseEntity<?> postStore(@RequestBody StoreDto storeDto){
-        return ResponseEntity.ok(service.add(storeDto));
+        if (storeDto.getQuiantity()!=0) {
+            return ResponseEntity.ok(service.add(storeDto));
+        }else{
+            return ResponseEntity.ok("No hay stock disponible para esta compra");
+        }
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Integer id){
-        StoreDto storeDto = str
-        Hardware local = service.findPickedHardware(storeDto);
+        Hardware hardwareLocal = service.findHardwareBysId(id);
         service.deleteCartItem(id);
-        return ResponseEntity.ok("hardware eliminado " + local);
+        return ResponseEntity.ok(hardwareLocal);
     }
 }

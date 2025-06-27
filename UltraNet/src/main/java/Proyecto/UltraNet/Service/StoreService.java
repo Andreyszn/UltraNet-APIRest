@@ -28,20 +28,39 @@ public class StoreService {
         return storeRepository.findAll();
     }
 
-    public Store add(StoreDto storeDto){
+//    public Store add(StoreDto storeDto){
+//        User user = userService.findUserByEmail(storeDto.getUserEmail());
+//        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
+//        Store store = new Store();
+//        store.setUser(user);
+//        store.setHardware(hardware);
+//        store.setQuantity(storeDto.getQuiantity());
+//        store.setTotalPrice(storeDto.getTotalPrice());
+//        store.setSaleDate(storeDto.getSaleDate());
+//        return storeRepository.save(store);
+//    }
+
+    public Store add(StoreDto storeDto) {
         User user = userService.findUserByEmail(storeDto.getUserEmail());
         Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
-        Store store = new Store();
-        store.setUser(user);
-        store.setHardware(hardware);
-        store.setQuantity(storeDto.getQuiantity());
-        store.setTotalPrice(storeDto.getTotalPrice());
-        store.setSaleDate(storeDto.getSaleDate());
-        return storeRepository.save(store);
+
+        if (hardware.getQuantity() != 0) {
+            hardware.setQuantity(hardware.getQuantity() - 1);
+            hardwareService.putHardware(hardware);
+            Store store = new Store();
+            store.setUser(user);
+            store.setHardware(hardware);
+            store.setQuantity(storeDto.getQuiantity());
+            store.setTotalPrice(storeDto.getTotalPrice());
+            store.setSaleDate(storeDto.getSaleDate());
+            return storeRepository.save(store);
+        }
+        return null;
     }
 
-    public StoreDto findStoreById (Integer id) {
-        return storeRepository.findById(id);
+    public Hardware findHardwareBysId(Integer id){
+        Store store = findById(id);
+        return store.getHardware();
     }
 
     public Hardware findHardwareById (Integer id){
@@ -59,7 +78,7 @@ public class StoreService {
             Hardware hardware = hardwareService.findHardwareById(store.getHardware().getId());
 
             // Esto devuelve el stock?
-            hardware.setQuantity(hardware.getQuantity() + store.getQuantity());
+            hardware.setQuantity(hardware.getQuantity() + 1);
             hardwareService.putHardware(hardware);
             storeRepository.deleteById(storeId);
         }
@@ -72,7 +91,10 @@ public class StoreService {
         }
         return storeRepository.findByUser(user);
     }
-
-
+    public Store findById(Integer id){
+        Store store = new Store();
+        store = storeRepository.findById(id).orElse(null);
+        return store;
+    }
 
 }
