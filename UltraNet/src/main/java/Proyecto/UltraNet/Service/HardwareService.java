@@ -83,5 +83,5 @@ public class HardwareService {
         return repository.existsById(id);
     }
 
-    public Hardware findHardwareById(Integer id){ return repository.findById(id)}
+    public Hardware findHardwareById(Integer id){ return repository.findById(id).orElse(null); }
 }
