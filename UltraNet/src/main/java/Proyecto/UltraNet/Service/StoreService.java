@@ -13,12 +13,6 @@ import java.util.List;
 @Service
 public class StoreService {
 
-//    @Autowired
-//    private StoreJpaRepository storeJpaRepository;
-//
-//    @Autowired
-//    private HardwareRepositoryJpa hardwareRepositoryJpa;
-
     private StoreJpaRepository storeRepository;
     private UserService userService;
     private HardwareService hardwareService;
@@ -43,10 +37,26 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
-    //Add item to cart
-    //Remove from cart
-    //get cart?
-    //clean the cart
+    public void deleteCartItem(Integer storeId) {
+        if (storeRepository.existsById(storeId)) {
+            Store store = storeRepository.findById(storeId).get();
+            Hardware hardware = hardwareService.findHardwareById(store.getHardware().getId());
 
-    //then the controller, should be easy enough
+            // Esto devuelve el stock?
+            hardware.setQuantity(hardware.getQuantity() + store.getQuantity());
+            hardwareService.putHardware(hardware);
+            storeRepository.deleteById(storeId);
+        }
+    }
+
+    public List<Store> getCartByUser(Integer userId) {
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            return null;
+        }
+        return storeRepository.findByUser(user);
+    }
+
+
+
 }

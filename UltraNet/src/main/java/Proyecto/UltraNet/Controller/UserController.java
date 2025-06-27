@@ -42,7 +42,7 @@ public class UserController {
         }
 
         if(service.isInvalidType(userDto.getType())){
-            return ResponseEntity.status(400).body("Error: El espacio type debe ser igual a client o admin");
+            return ResponseEntity.status(400).body("Error: El espacio type debe ser igual a client o Administrator");
         }
 
         User createdUser = service.addUser(userDto);
