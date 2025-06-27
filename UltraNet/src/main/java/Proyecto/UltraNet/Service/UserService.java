@@ -51,6 +51,8 @@ public class UserService {
         return repository.findById(id).orElse(null);
     }
 
+    public User findUserByEmail(String email){ return repository.findByEmail(email); }
+
     public void deleteUser(Integer id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
