@@ -23,7 +23,8 @@ public class StoreController {
 
     @PostMapping
     public ResponseEntity<?> postStore(@RequestBody StoreDto storeDto){
-        if (storeDto.getQuiantity()!=0) {
+        Hardware hardware = service.findHardwareById(storeDto.getHardwareId());
+        if (hardware.getQuantity()!=0) {
             return ResponseEntity.ok(service.add(storeDto));
         }else{
             return ResponseEntity.ok("No hay stock disponible para esta compra");
