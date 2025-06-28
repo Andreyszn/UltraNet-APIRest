@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/store")
 public class StoreController {
+
     @Autowired
     StoreService service;
 
@@ -33,4 +34,11 @@ public class StoreController {
         service.deleteCartItem(id);
         return ResponseEntity.ok(hardwareLocal);
     }
+
+    @GetMapping("/invoice/{id}")
+    public ResponseEntity<String> getFactura(@PathVariable Integer id) {
+        String invoice = service.getInvoiceById(id);
+        return ResponseEntity.ok(invoice);
+    }
+
 }

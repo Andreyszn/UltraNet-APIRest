@@ -160,7 +160,6 @@ public class HardwareService {
         }
     }
 
-
     //misma version de Pcie entre motherboard y tarjeta grafica
     public boolean motherGraphics(String pciePort){
         if(pciePort.equalsIgnoreCase("Pcie 5.0")){
@@ -252,9 +251,9 @@ public class HardwareService {
         return false;
     }
 
-
-
-    public Hardware findHardwareById(Integer id){ return repository.findById(id).orElse(null); }
+    public Hardware findHardwareById(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
 
 }
 

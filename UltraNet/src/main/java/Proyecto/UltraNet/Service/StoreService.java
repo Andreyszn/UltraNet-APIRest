@@ -53,10 +53,10 @@ public class StoreService {
         return hardwareService.findHardwareById(id);
     }
 
-    public Hardware findPickedHardware (StoreDto storeDto) {
-        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
-        return hardware;
-    }
+//    public Hardware findPickedHardware (StoreDto storeDto) {
+//        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
+//        return hardware;
+//    }
 
     public void deleteCartItem(Integer storeId) {
         if (storeRepository.existsById(storeId)) {
@@ -69,17 +69,48 @@ public class StoreService {
         }
     }
 
-    public List<Store> getCartByUser(Integer userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            return null;
-        }
-        return storeRepository.findByUser(user);
-    }
+//    public List<Store> getCartByUser(Integer userId) {
+//        User user = userService.findUserById(userId);
+//        if (user == null) {
+//            return null;
+//        }
+//        return storeRepository.findByUser(user);
+//    }
 
     public Store findById(Integer id){
         Store store = new Store();
         store = storeRepository.findById(id).orElse(null);
         return store;
+    }
+
+    public String getInvoiceById(Integer storeId) {
+        Store store = storeRepository.findById(storeId).orElse(null);
+
+        if (store != null) {
+            User user = store.getUser();
+            Hardware hardware = store.getHardware();
+
+            String invoice = "------ UltraNet Invoice ------\n" +
+                             "Invoice id: " + store.getId() + "\n" +
+                             "Date: " + store.getSaleDate() + "\n\n" +
+
+                             "Customer information:\n" +
+                             "Name: " + user.getName() + "\n" +
+                             "Email: " + user.getEmail() + "\n\n" +
+
+                             "Products details:\n" +
+                             "Name: " + hardware.getName() + "\n" +
+                             "Type: " + hardware.getType() + "\n" +
+                             "Brand: " + hardware.getBrand() + "\n" +
+                             "Description: " + hardware.getDescription() + "\n\n" +
+
+                             "Order summary:\n" +
+                             "Quantity: " + store.getQuantity() + "\n" +
+                             "Unit price: $" + hardware.getPrice() + "\n" +
+                             "Total price: $" + store.getTotalPrice() + "\n" +
+                             "----------------------------";
+            return invoice;
+        }
+        return "Error, please verify the id.";
     }
 }
