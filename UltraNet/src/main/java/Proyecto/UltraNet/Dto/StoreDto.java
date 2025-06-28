@@ -1,17 +1,19 @@
 package Proyecto.UltraNet.Dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StoreDto {
     private String userEmail;
-    private Integer hardwareId;
+    private List<Integer> hardwareId = new ArrayList<>();
     private LocalDate saleDate;
-    private Integer quantity;
+    private List<Integer> quantity = new ArrayList<>();
 
     public StoreDto() {
     }
 
-    public StoreDto(String userEmail, Integer hardwareId, Double totalPrice, LocalDate saleDate, Integer quantity) {
+    public StoreDto(String userEmail, List<Integer> hardwareId, LocalDate saleDate, List<Integer> quantity) {
         this.userEmail = userEmail;
         this.hardwareId = hardwareId;
         this.saleDate = saleDate;
@@ -26,15 +28,15 @@ public class StoreDto {
         this.userEmail = userEmail;
     }
 
-    public Integer getHardwareId() {
+    public List<Integer> getHardwareId() {
         return hardwareId;
     }
 
-    public void setHardwareId(Integer hardwareId) {
+    public void setHardwareId(List<Integer> hardwareId) {
         this.hardwareId = hardwareId;
     }
 
-//    public Double getTotalPrice() {
+    //    public Double getTotalPrice() {
 //        return totalPrice;
 //    }
 //
@@ -50,11 +52,11 @@ public class StoreDto {
         this.saleDate = saleDate;
     }
 
-    public Integer getQuantity() {
+    public List<Integer> getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(List<Integer> quantity) {
         this.quantity = quantity;
     }
 }

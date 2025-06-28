@@ -3,6 +3,7 @@ package Proyecto.UltraNet.Model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Store {
@@ -10,18 +11,18 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer quantity;
+    private List<Integer> quantity;
     private Double totalPrice;
     private LocalDate saleDate;
-    @ManyToOne
-    private Hardware hardware;
+    @ManyToMany
+    private List<Hardware> hardware;
     @ManyToOne
     private User user;
 
     public Store() {
     }
 
-    public Store(User user, Hardware hardware, LocalDate saleDate, Double totalPrice, Integer quantity, Integer id) {
+    public Store(User user, List<Hardware> hardware, LocalDate saleDate, Double totalPrice, List<Integer> quantity, Integer id) {
         this.user = user;
         this.hardware = hardware;
         this.saleDate = saleDate;
@@ -38,11 +39,11 @@ public class Store {
         this.id = id;
     }
 
-    public Hardware getHardware() {
+    public List<Hardware> getHardware() {
         return hardware;
     }
 
-    public void setHardware(Hardware hardware) {
+    public void setHardware(List<Hardware> hardware) {
         this.hardware = hardware;
     }
 
@@ -54,11 +55,11 @@ public class Store {
         this.user = user;
     }
 
-    public Integer getQuantity() {
+    public List<Integer> getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(List<Integer> quantity) {
         this.quantity = quantity;
     }
 

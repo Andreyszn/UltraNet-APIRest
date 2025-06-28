@@ -255,6 +255,10 @@ public class HardwareService {
         return repository.findById(id).orElse(null);
     }
 
+    public List<Hardware> findAllById(List<Integer> listBuy){
+        return repository.findAllById(listBuy);
+    }
+
 }
 
 
