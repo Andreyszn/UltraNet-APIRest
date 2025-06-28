@@ -253,6 +253,9 @@ public class HardwareService {
     }
 
 
+
+    public Hardware findHardwareById(Integer id){ return repository.findById(id).orElse(null); }
+
 }
 
 

@@ -2,6 +2,8 @@ package Proyecto.UltraNet.Model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 public class Store {
 
@@ -9,7 +11,8 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer quantity;
-
+    private Double totalPrice;
+    private LocalDate saleDate;
     @ManyToOne
     private Hardware hardware;
     @ManyToOne
@@ -18,11 +21,13 @@ public class Store {
     public Store() {
     }
 
-    public Store(Integer id, Hardware hardware, User user, Integer quantity) {
-        this.id = id;
-        this.hardware = hardware;
+    public Store(User user, Hardware hardware, LocalDate saleDate, Double totalPrice, Integer quantity, Integer id) {
         this.user = user;
+        this.hardware = hardware;
+        this.saleDate = saleDate;
+        this.totalPrice = totalPrice;
         this.quantity = quantity;
+        this.id = id;
     }
 
     public Integer getId() {
@@ -55,5 +60,21 @@ public class Store {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public LocalDate getSaleDate() {
+        return saleDate;
+    }
+
+    public void setSaleDate(LocalDate saleDate) {
+        this.saleDate = saleDate;
     }
 }
