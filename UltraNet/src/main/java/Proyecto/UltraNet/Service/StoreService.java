@@ -31,7 +31,7 @@ public class StoreService {
         Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
 
         if (hardware.getQuantity() != 0 && hardware.getQuantity() >= storeDto.getQuantity() ) {
-            hardware.setQuantity(hardware.getQuantity() - 1);
+            hardware.setQuantity(hardware.getQuantity() - storeDto.getQuantity());
             hardwareService.putHardware(hardware);
             Store store = new Store();
             store.setUser(user);
@@ -63,7 +63,7 @@ public class StoreService {
             Store store = storeRepository.findById(storeId).get();
             Hardware hardware = hardwareService.findHardwareById(store.getHardware().getId());
 
-            hardware.setQuantity(hardware.getQuantity() + 1);
+            hardware.setQuantity(hardware.getQuantity() + store.getQuantity());
             hardwareService.putHardware(hardware);
             storeRepository.deleteById(storeId);
         }
