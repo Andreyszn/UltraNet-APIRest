@@ -3,6 +3,7 @@ package Proyecto.UltraNet.Service;
 import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Repository.HardwareRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +28,11 @@ public class HardwareService {
                               if ((motherCpuAMD(hardware.getCpuPort()) || (motherCpuIntel(hardware.getCpuPort())))) {
                                   return repository.save(hardware);
                               }
-                              return null;
+
                           }
-                          return null;
+
                       }
-                      return null;
+
                   }
 
               } else {
@@ -60,7 +61,8 @@ public class HardwareService {
         Hardware hardwareBd = repository.findById(hardware.getId()).get();
 
         if (hardware.getName() != null) {
-            if(existByName(hardware.getName())){return null;}else{
+            if(existByName(hardware.getName())){
+                ; }else{
             hardwareBd.setName(hardware.getName());  }
         }
         if (hardware.getDescription() != null) {
