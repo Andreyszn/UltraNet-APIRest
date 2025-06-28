@@ -38,16 +38,21 @@ public class StoreController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Integer id){
         Store storeLocal = service.getStoreById(id);
-        List<Integer> idHardwareList = service.getIdHardwareList(storeLocal.getHardware());
-        List<Hardware> hardwareLocal = service.getListHardwareBuy(idHardwareList);
-        service.deleteCartItem(id);
-        return ResponseEntity.ok(hardwareLocal);
+        if (storeLocal != null){
+            List<Integer> idHardwareList = service.getIdHardwareList(storeLocal.getHardware());
+            List<Hardware> hardwareLocal = service.getListHardwareBuy(idHardwareList);
+            service.deleteCartItem(id);
+            return ResponseEntity.ok(hardwareLocal);
+        }
+        return ResponseEntity.status(404).body("Error, no se encontró una compra con ese id.");
     }
 
     @GetMapping("/invoice/{id}")
-    public ResponseEntity<String> getFactura(@PathVariable Integer id) {
-        String invoice = service.getInvoiceById(id);
-        return ResponseEntity.ok(invoice);
+    public ResponseEntity<?> getFactura(@PathVariable Integer id) {
+        if(service.existsById(id)){
+            String invoice = service.getInvoiceById(id);
+            return ResponseEntity.ok(invoice);
+        }
+        return ResponseEntity.status(404).body("No se encontró la factura con ese id.");
     }
-
 }

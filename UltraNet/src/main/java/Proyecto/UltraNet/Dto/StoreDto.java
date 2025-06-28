@@ -36,13 +36,6 @@ public class StoreDto {
         this.hardwareId = hardwareId;
     }
 
-    //    public Double getTotalPrice() {
-//        return totalPrice;
-//    }
-//
-//    public void setTotalPrice(Double totalPrice) {
-//        this.totalPrice = totalPrice;
-//    }
 
     public LocalDate getSaleDate() {
         return saleDate;

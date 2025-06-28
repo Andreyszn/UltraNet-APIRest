@@ -91,7 +91,6 @@ public class HardwareController {
         if (!service.existsById(hardware.getId())) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + hardware.getId());
         }
-//        if(!service.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
         Hardware patched = service.patchHardware(hardware);
         if(!service.existByName(hardware.getName())){ return ResponseEntity.status(400).body("Verifique que el nombre no este repetido");}else{
         return ResponseEntity.ok(patched);}

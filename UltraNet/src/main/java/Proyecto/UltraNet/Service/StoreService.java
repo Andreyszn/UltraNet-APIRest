@@ -23,6 +23,10 @@ public class StoreService {
         this.hardwareService = hardwareService;
     }
 
+    public boolean existsById(Integer id){
+        return storeRepository.existsById(id);
+    }
+
     public List<Store> getAll(){
         return storeRepository.findAll();
     }
@@ -32,8 +36,7 @@ public class StoreService {
         List<Hardware> hardware = getListHardwareBuy(storeDto.getHardwareId());
         List<Integer> quantities = storeDto.getQuantity();
 
-//        if (validationQuantity(hardware, quantities)) {
-//            decriaseQuantity(hardware, quantities);
+            decreaseQuantity(hardware, quantities);
             Store store = new Store();
             store.setUser(user);
             store.setHardware(hardware);
@@ -43,8 +46,6 @@ public class StoreService {
             store.setTotalPrice(totalPrice);
             store.setSaleDate(storeDto.getSaleDate());
             return storeRepository.save(store);
-//        }
-//        return null;
     }
 
     public List<Hardware> getListHardwareBuy(List<Integer> buyList){
@@ -65,7 +66,7 @@ public class StoreService {
         return true;
     }
 
-    public void incriaseQuantity(List<Hardware> listHardware, List<Integer> listQuantities){
+    public void increaseQuantity(List<Hardware> listHardware, List<Integer> listQuantities){
         for(int element=0; element<listHardware.size();element++){
             Hardware hardware = listHardware.get(element);
             Integer newQuantity = hardware.getQuantity()+listQuantities.get(element);
@@ -74,7 +75,7 @@ public class StoreService {
         }
     }
 
-    public void decriaseQuantity(List<Hardware> listHardware, List<Integer> listQuantities){
+    public void decreaseQuantity(List<Hardware> listHardware, List<Integer> listQuantities){
         for(int element=0; element<listHardware.size();element++){
             Hardware hardware = listHardware.get(element);
             Integer newQuantity = hardware.getQuantity()-listQuantities.get(element);
@@ -106,11 +107,6 @@ public class StoreService {
         return listId;
     }
 
-//    public Hardware findHardwareBysId(Integer id){
-//        Store store = findById(id);
-//        return store.getHardware();
-//    }
-
     public Hardware findHardwareById (Integer id){
         return hardwareService.findHardwareById(id);
     }
@@ -119,32 +115,18 @@ public class StoreService {
         return hardwareService.getAll();
     }
 
-//    public Hardware findPickedHardware (StoreDto storeDto) {
-//        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
-//        return hardware;
-//    }
-
     public void deleteCartItem(Integer storeId) {
         if (storeRepository.existsById(storeId)) {
             Store store = storeRepository.findById(storeId).get();
-           //List<Hardware> hardware = hardwareService.findHardwareById(store.getHardware().getId());
 
             List<Integer> idHardware = getIdHardwareList(store.getHardware());
             List<Hardware> hardwares = getListHardwareBuy(idHardware);
             List<Integer> quantities = store.getQuantity();
 
-            incriaseQuantity(hardwares, quantities);
+            increaseQuantity(hardwares, quantities);
             storeRepository.deleteById(storeId);
         }
     }
-
-//    public List<Store> getCartByUser(Integer userId) {
-//        User user = userService.findUserById(userId);
-//        if (user == null) {
-//            return null;
-//        }
-//        return storeRepository.findByUser(user);
-//    }
 
     public Store findById(Integer id){
         return storeRepository.findById(id).orElse(null);
@@ -152,8 +134,6 @@ public class StoreService {
 
     public String getInvoiceById(Integer storeId) {
         Store store = storeRepository.findById(storeId).orElse(null);
-
-        if (store != null) {
             User user = store.getUser();
             List<Hardware> hardwareList = store.getHardware();
             List<Integer> quantitiesList = store.getQuantity();
@@ -182,13 +162,10 @@ public class StoreService {
                         "Unit price: ₡" + hardware.getPrice() + "\n" +
                         "Sub Total price: ₡" + subTotal + "\n\n";
             }
-
             invoice +=
                     "Final Price: ₡"+store.getTotalPrice()+"\n"+
                             "----------------------------";
 
             return invoice;
-        }
-        return "Error, please verify the id.";
     }
 }
