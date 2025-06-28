@@ -48,7 +48,7 @@ public class StoreController {
     }
 
     @GetMapping("/invoice/{id}")
-    public ResponseEntity<?> getFactura(@PathVariable Integer id) {
+    public ResponseEntity<?> getInvoice(@PathVariable Integer id) {
         if(service.existsById(id)){
             String invoice = service.getInvoiceById(id);
             return ResponseEntity.ok(invoice);
