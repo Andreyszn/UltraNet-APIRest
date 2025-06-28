@@ -59,13 +59,6 @@ public class UserService {
         }
     }
 
-    public boolean isInvalidPassword(String password){
-        if(password.length()<8 || password.length()>16){
-            return true;
-        }
-        return false;
-    }
-
     public boolean isInvalidType(String type){
         if(type.equalsIgnoreCase("Client") || type.equalsIgnoreCase("Administrator")){
             return false;

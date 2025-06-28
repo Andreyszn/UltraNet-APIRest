@@ -4,9 +4,7 @@ import Proyecto.UltraNet.Dto.StoreDto;
 import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Model.Store;
 import Proyecto.UltraNet.Model.User;
-import Proyecto.UltraNet.Repository.HardwareRepositoryJpa;
 import Proyecto.UltraNet.Repository.StoreJpaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,29 +26,17 @@ public class StoreService {
         return storeRepository.findAll();
     }
 
-//    public Store add(StoreDto storeDto){
-//        User user = userService.findUserByEmail(storeDto.getUserEmail());
-//        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
-//        Store store = new Store();
-//        store.setUser(user);
-//        store.setHardware(hardware);
-//        store.setQuantity(storeDto.getQuiantity());
-//        store.setTotalPrice(storeDto.getTotalPrice());
-//        store.setSaleDate(storeDto.getSaleDate());
-//        return storeRepository.save(store);
-//    }
-
     public Store add(StoreDto storeDto) {
         User user = userService.findUserByEmail(storeDto.getUserEmail());
         Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
 
-        if (hardware.getQuantity() != 0) {
-            hardware.setQuantity(hardware.getQuantity() - 1);
+        if (hardware.getQuantity() != 0 && hardware.getQuantity() >= storeDto.getQuantity() ) {
+            hardware.setQuantity(hardware.getQuantity() - storeDto.getQuantity());
             hardwareService.putHardware(hardware);
             Store store = new Store();
             store.setUser(user);
             store.setHardware(hardware);
-            store.setQuantity(storeDto.getQuiantity());
+            store.setQuantity(storeDto.getQuantity());
             store.setTotalPrice(storeDto.getTotalPrice());
             store.setSaleDate(storeDto.getSaleDate());
             return storeRepository.save(store);
@@ -67,34 +53,64 @@ public class StoreService {
         return hardwareService.findHardwareById(id);
     }
 
-    public Hardware findPickedHardware (StoreDto storeDto) {
-        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
-        return hardware;
-    }
+//    public Hardware findPickedHardware (StoreDto storeDto) {
+//        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
+//        return hardware;
+//    }
 
     public void deleteCartItem(Integer storeId) {
         if (storeRepository.existsById(storeId)) {
             Store store = storeRepository.findById(storeId).get();
             Hardware hardware = hardwareService.findHardwareById(store.getHardware().getId());
 
-            // Esto devuelve el stock?
-            hardware.setQuantity(hardware.getQuantity() + 1);
+            hardware.setQuantity(hardware.getQuantity() + store.getQuantity());
             hardwareService.putHardware(hardware);
             storeRepository.deleteById(storeId);
         }
     }
 
-    public List<Store> getCartByUser(Integer userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            return null;
-        }
-        return storeRepository.findByUser(user);
-    }
+//    public List<Store> getCartByUser(Integer userId) {
+//        User user = userService.findUserById(userId);
+//        if (user == null) {
+//            return null;
+//        }
+//        return storeRepository.findByUser(user);
+//    }
+
     public Store findById(Integer id){
         Store store = new Store();
         store = storeRepository.findById(id).orElse(null);
         return store;
     }
 
+    public String getInvoiceById(Integer storeId) {
+        Store store = storeRepository.findById(storeId).orElse(null);
+
+        if (store != null) {
+            User user = store.getUser();
+            Hardware hardware = store.getHardware();
+
+            String invoice = "------ UltraNet Invoice ------\n" +
+                             "Invoice id: " + store.getId() + "\n" +
+                             "Date: " + store.getSaleDate() + "\n\n" +
+
+                             "Customer information:\n" +
+                             "Name: " + user.getName() + "\n" +
+                             "Email: " + user.getEmail() + "\n\n" +
+
+                             "Products details:\n" +
+                             "Name: " + hardware.getName() + "\n" +
+                             "Type: " + hardware.getType() + "\n" +
+                             "Brand: " + hardware.getBrand() + "\n" +
+                             "Description: " + hardware.getDescription() + "\n\n" +
+
+                             "Order summary:\n" +
+                             "Quantity: " + store.getQuantity() + "\n" +
+                             "Unit price: $" + hardware.getPrice() + "\n" +
+                             "Total price: $" + store.getTotalPrice() + "\n" +
+                             "----------------------------";
+            return invoice;
+        }
+        return "Error, please verify the id.";
+    }
 }

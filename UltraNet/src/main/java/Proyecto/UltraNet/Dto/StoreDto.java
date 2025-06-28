@@ -7,17 +7,17 @@ public class StoreDto {
     private Integer hardwareId;
     private Double totalPrice;
     private LocalDate saleDate;
-    private Integer quiantity;
+    private Integer quantity;
 
     public StoreDto() {
     }
 
-    public StoreDto(String userEmail, Integer hardwareId, Double totalPrice, LocalDate saleDate, Integer quiantity) {
+    public StoreDto(String userEmail, Integer hardwareId, Double totalPrice, LocalDate saleDate, Integer quantity) {
         this.userEmail = userEmail;
         this.hardwareId = hardwareId;
         this.totalPrice = totalPrice;
         this.saleDate = saleDate;
-        this.quiantity = quiantity;
+        this.quantity = quantity;
     }
 
     public String getUserEmail() {
@@ -52,11 +52,11 @@ public class StoreDto {
         this.saleDate = saleDate;
     }
 
-    public Integer getQuiantity() {
-        return quiantity;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setQuiantity(Integer quiantity) {
-        this.quiantity = quiantity;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
