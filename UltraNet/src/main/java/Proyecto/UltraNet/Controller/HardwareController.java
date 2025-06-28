@@ -33,7 +33,13 @@ public class HardwareController {
     @PostMapping
     public ResponseEntity<Hardware> postHardware(@RequestBody Hardware hardware) {
         Hardware created = service.addHardware(hardware);
+        if(created == null){return ResponseEntity.status(400).build();}
+        else{
+            if(service.typeIsMotherBoard(hardware.getType())){
+                return ResponseEntity.status(201).body(created);
+            }
         return ResponseEntity.status(201).body(created);
+        }
     }
 
     @PutMapping
@@ -44,7 +50,11 @@ public class HardwareController {
         if (!service.existsById(hardware.getId())) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + hardware.getId());
         }
+        if (service.existByName(hardware.getName())){
+            return ResponseEntity.status(400).body("cambie el nombre que esta repetido");
+        }
         Hardware updated = service.putHardware(hardware);
+
         return ResponseEntity.ok(updated);
     }
 
@@ -56,8 +66,10 @@ public class HardwareController {
         if (!service.existsById(hardware.getId())) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + hardware.getId());
         }
+
         Hardware patched = service.patchHardware(hardware);
-        return ResponseEntity.ok(patched);
+        if(patched == null){ return ResponseEntity.status(400).body("Verifique que el nombre no este repetido");}else{
+        return ResponseEntity.ok(patched);}
     }
 
     @DeleteMapping("{id}")
