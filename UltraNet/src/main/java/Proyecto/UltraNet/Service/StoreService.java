@@ -37,7 +37,9 @@ public class StoreService {
             store.setUser(user);
             store.setHardware(hardware);
             store.setQuantity(storeDto.getQuantity());
-            store.setTotalPrice(storeDto.getTotalPrice());
+            int sumPrice = storeDto.getQuantity()*hardware.getPrice();
+            Double totalPrice = (double) sumPrice;
+            store.setTotalPrice(totalPrice);
             store.setSaleDate(storeDto.getSaleDate());
             return storeRepository.save(store);
         }

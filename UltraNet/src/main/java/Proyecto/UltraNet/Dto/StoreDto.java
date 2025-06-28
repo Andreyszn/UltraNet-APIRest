@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class StoreDto {
     private String userEmail;
     private Integer hardwareId;
-    private Double totalPrice;
     private LocalDate saleDate;
     private Integer quantity;
 
@@ -15,7 +14,6 @@ public class StoreDto {
     public StoreDto(String userEmail, Integer hardwareId, Double totalPrice, LocalDate saleDate, Integer quantity) {
         this.userEmail = userEmail;
         this.hardwareId = hardwareId;
-        this.totalPrice = totalPrice;
         this.saleDate = saleDate;
         this.quantity = quantity;
     }
@@ -36,13 +34,13 @@ public class StoreDto {
         this.hardwareId = hardwareId;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+//    public Double getTotalPrice() {
+//        return totalPrice;
+//    }
+//
+//    public void setTotalPrice(Double totalPrice) {
+//        this.totalPrice = totalPrice;
+//    }
 
     public LocalDate getSaleDate() {
         return saleDate;
