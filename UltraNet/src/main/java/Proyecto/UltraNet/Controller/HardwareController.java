@@ -31,11 +31,23 @@ public class HardwareController {
     }
 
     @PostMapping
-    public ResponseEntity<Hardware> postHardware(@RequestBody Hardware hardware) {
+    public ResponseEntity<?> postHardware(@RequestBody Hardware hardware) {
         Hardware created = service.addHardware(hardware);
-        if(created == null){return ResponseEntity.status(400).build();}
+
+        if(!service.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
+
         else{
             if(service.typeIsMotherBoard(hardware.getType())){
+
+                if(!service.motherGraphics(hardware.getPciePort())){return ResponseEntity.status(404).body("Falta un puerto pcie válido");}
+                if(!service.motherStorage(hardware.getStoragePort())){return ResponseEntity.status(404).body("Falta un almacenamiento válido");}
+                if(!service.motherRam(hardware.getRamPort())){return ResponseEntity.status(404).body("Falta una RAM valida");}
+                if( !(service.motherCpuAMD(hardware.getCpuPort())) && !(service.motherCpuIntel(hardware.getCpuPort())) ){
+                    return ResponseEntity.status(404).body("Falta un socket válido");
+                }
+
+                if(created == null){return ResponseEntity.status(404).body("Nombre repetido cambialo la chucha");}
+
                 return ResponseEntity.status(201).body(created);
             }
         return ResponseEntity.status(201).body(created);
@@ -53,7 +65,20 @@ public class HardwareController {
         if (service.existByName(hardware.getName())){
             return ResponseEntity.status(400).body("cambie el nombre que esta repetido");
         }
+        if(!service.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
         Hardware updated = service.putHardware(hardware);
+
+        if(service.typeIsMotherBoard(hardware.getType())){
+
+            if(!service.motherGraphics(hardware.getPciePort())){return ResponseEntity.status(404).body("Falta un puerto pcie válido");}
+            if(!service.motherStorage(hardware.getStoragePort())){return ResponseEntity.status(404).body("Falta un almacenamiento válido");}
+            if(!service.motherRam(hardware.getRamPort())){return ResponseEntity.status(404).body("Falta una RAM valida");}
+            if( !(service.motherCpuAMD(hardware.getCpuPort())) && !(service.motherCpuIntel(hardware.getCpuPort())) ){
+                return ResponseEntity.status(404).body("Falta un socket válido");
+            }
+
+            return ResponseEntity.status(201).body(updated);
+        }
 
         return ResponseEntity.ok(updated);
     }
@@ -66,9 +91,9 @@ public class HardwareController {
         if (!service.existsById(hardware.getId())) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + hardware.getId());
         }
-
+//        if(!service.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
         Hardware patched = service.patchHardware(hardware);
-        if(patched == null){ return ResponseEntity.status(400).body("Verifique que el nombre no este repetido");}else{
+        if(!service.existByName(hardware.getName())){ return ResponseEntity.status(400).body("Verifique que el nombre no este repetido");}else{
         return ResponseEntity.ok(patched);}
     }
 
