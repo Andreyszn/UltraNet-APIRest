@@ -4,9 +4,7 @@ import Proyecto.UltraNet.Dto.StoreDto;
 import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Model.Store;
 import Proyecto.UltraNet.Model.User;
-import Proyecto.UltraNet.Repository.HardwareRepositoryJpa;
 import Proyecto.UltraNet.Repository.StoreJpaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,29 +26,17 @@ public class StoreService {
         return storeRepository.findAll();
     }
 
-//    public Store add(StoreDto storeDto){
-//        User user = userService.findUserByEmail(storeDto.getUserEmail());
-//        Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
-//        Store store = new Store();
-//        store.setUser(user);
-//        store.setHardware(hardware);
-//        store.setQuantity(storeDto.getQuiantity());
-//        store.setTotalPrice(storeDto.getTotalPrice());
-//        store.setSaleDate(storeDto.getSaleDate());
-//        return storeRepository.save(store);
-//    }
-
     public Store add(StoreDto storeDto) {
         User user = userService.findUserByEmail(storeDto.getUserEmail());
         Hardware hardware = hardwareService.findHardwareById(storeDto.getHardwareId());
 
-        if (hardware.getQuantity() != 0) {
+        if (hardware.getQuantity() != 0 && hardware.getQuantity() >= storeDto.getQuantity() ) {
             hardware.setQuantity(hardware.getQuantity() - 1);
             hardwareService.putHardware(hardware);
             Store store = new Store();
             store.setUser(user);
             store.setHardware(hardware);
-            store.setQuantity(storeDto.getQuiantity());
+            store.setQuantity(storeDto.getQuantity());
             store.setTotalPrice(storeDto.getTotalPrice());
             store.setSaleDate(storeDto.getSaleDate());
             return storeRepository.save(store);
@@ -77,7 +63,6 @@ public class StoreService {
             Store store = storeRepository.findById(storeId).get();
             Hardware hardware = hardwareService.findHardwareById(store.getHardware().getId());
 
-            // Esto devuelve el stock?
             hardware.setQuantity(hardware.getQuantity() + 1);
             hardwareService.putHardware(hardware);
             storeRepository.deleteById(storeId);
@@ -91,10 +76,10 @@ public class StoreService {
         }
         return storeRepository.findByUser(user);
     }
+
     public Store findById(Integer id){
         Store store = new Store();
         store = storeRepository.findById(id).orElse(null);
         return store;
     }
-
 }

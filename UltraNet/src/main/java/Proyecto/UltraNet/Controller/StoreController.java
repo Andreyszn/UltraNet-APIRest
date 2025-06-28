@@ -2,13 +2,10 @@ package Proyecto.UltraNet.Controller;
 
 import Proyecto.UltraNet.Dto.StoreDto;
 import Proyecto.UltraNet.Model.Hardware;
-import Proyecto.UltraNet.Model.Store;
 import Proyecto.UltraNet.Service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/store")
@@ -23,11 +20,11 @@ public class StoreController {
 
     @PostMapping
     public ResponseEntity<?> postStore(@RequestBody StoreDto storeDto){
-        if (storeDto.getQuiantity()!=0) {
+        Hardware hardware = service.findHardwareById(storeDto.getHardwareId());
+        if (hardware.getQuantity()!=0) {
             return ResponseEntity.ok(service.add(storeDto));
-        }else{
-            return ResponseEntity.ok("No hay stock disponible para esta compra");
         }
+         return ResponseEntity.status(404).body("Error, no hay stock del item: \n" + hardware);
     }
 
     @DeleteMapping("{id}")
