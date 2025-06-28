@@ -44,10 +44,10 @@ public class StoreController {
         return ResponseEntity.ok(hardwareLocal);
     }
 
-//    @GetMapping("/invoice/{id}")
-//    public ResponseEntity<String> getFactura(@PathVariable Integer id) {
-//        String invoice = service.getInvoiceById(id);
-//        return ResponseEntity.ok(invoice);
-//    }
+    @GetMapping("/invoice/{id}")
+    public ResponseEntity<String> getFactura(@PathVariable Integer id) {
+        String invoice = service.getInvoiceById(id);
+        return ResponseEntity.ok(invoice);
+    }
 
 }

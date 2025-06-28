@@ -66,7 +66,7 @@ public class StoreService {
     }
 
     public void incriaseQuantity(List<Hardware> listHardware, List<Integer> listQuantities){
-        for(int element=0; element>listHardware.size();element++){
+        for(int element=0; element<listHardware.size();element++){
             Hardware hardware = listHardware.get(element);
             Integer newQuantity = hardware.getQuantity()+listQuantities.get(element);
             hardware.setQuantity(newQuantity);
@@ -75,7 +75,7 @@ public class StoreService {
     }
 
     public void decriaseQuantity(List<Hardware> listHardware, List<Integer> listQuantities){
-        for(int element=0; element>listHardware.size();element++){
+        for(int element=0; element<listHardware.size();element++){
             Hardware hardware = listHardware.get(element);
             Integer newQuantity = hardware.getQuantity()-listQuantities.get(element);
             hardware.setQuantity(newQuantity);
@@ -85,8 +85,8 @@ public class StoreService {
 
     public int getTotalPrice(List<Hardware> listHardware, List<Integer> listQuantities){
         int totalPrice=0;
-        for(int element=0; element>listHardware.size();element++){
-            totalPrice+=listHardware.get(element).getPrice()+listQuantities.get(element);
+        for(int element=0; element<listHardware.size();element++){
+            totalPrice+=listHardware.get(element).getPrice()*listQuantities.get(element);
         }
         return totalPrice;
     }
@@ -96,8 +96,11 @@ public class StoreService {
     }
 
     public List<Integer> getIdHardwareList(List<Hardware> listBuy){
-        List<Integer> listId=null;
-        for(int element=0; element>listBuy.size();element++){
+        if(listBuy.isEmpty()){
+            return new ArrayList<>();
+        }
+        List<Integer> listId= new ArrayList<>();
+        for(int element=0; element<listBuy.size();element++){
             listId.add(listBuy.get(element).getId());
         }
         return listId;
@@ -147,34 +150,45 @@ public class StoreService {
         return storeRepository.findById(id).orElse(null);
     }
 
-//    public String getInvoiceById(Integer storeId) {
-//        Store store = storeRepository.findById(storeId).orElse(null);
-//
-//        if (store != null) {
-//            User user = store.getUser();
-//            Hardware hardware = store.getHardware();
-//
-//            String invoice = "------ UltraNet Invoice ------\n" +
-//                             "Invoice id: " + store.getId() + "\n" +
-//                             "Date: " + store.getSaleDate() + "\n\n" +
-//
-//                             "Customer information:\n" +
-//                             "Name: " + user.getName() + "\n" +
-//                             "Email: " + user.getEmail() + "\n\n" +
-//
-//                             "Products details:\n" +
-//                             "Name: " + hardware.getName() + "\n" +
-//                             "Type: " + hardware.getType() + "\n" +
-//                             "Brand: " + hardware.getBrand() + "\n" +
-//                             "Description: " + hardware.getDescription() + "\n\n" +
-//
-//                             "Order summary:\n" +
-//                             "Quantity: " + store.getQuantity() + "\n" +
-//                             "Unit price: $" + hardware.getPrice() + "\n" +
-//                             "Total price: $" + store.getTotalPrice() + "\n" +
-//                             "----------------------------";
-//            return invoice;
-//        }
-//        return "Error, please verify the id.";
-//    }
+    public String getInvoiceById(Integer storeId) {
+        Store store = storeRepository.findById(storeId).orElse(null);
+
+        if (store != null) {
+            User user = store.getUser();
+            List<Hardware> hardwareList = store.getHardware();
+            List<Integer> quantitiesList = store.getQuantity();
+
+            String invoice = "------ UltraNet Invoice ------\n" +
+                             "Invoice id: " + store.getId() + "\n" +
+                             "Date: " + store.getSaleDate() + "\n\n" +
+
+                             "Customer information:\n" +
+                             "Name: " + user.getName() + "\n" +
+                             "Email: " + user.getEmail() + "\n\n";
+
+            for(int element=0; element<hardwareList.size();element++) {
+                Hardware hardware = hardwareList.get(element);
+                Integer quantity = quantitiesList.get(element);
+                int subTotal = hardware.getPrice()*quantity;
+                invoice +=
+                        "Products details:\n" +
+                        "Name: " + hardware.getName() + "\n" +
+                        "Type: " + hardware.getType() + "\n" +
+                        "Brand: " + hardware.getBrand() + "\n" +
+                        "Description: " + hardware.getDescription() + "\n\n" +
+
+                        "Order summary:\n" +
+                        "Quantity: " + quantity + "\n" +
+                        "Unit price: ₡" + hardware.getPrice() + "\n" +
+                        "Sub Total price: ₡" + subTotal + "\n\n";
+            }
+
+            invoice +=
+                    "Final Price: ₡"+store.getTotalPrice()+"\n"+
+                            "----------------------------";
+
+            return invoice;
+        }
+        return "Error, please verify the id.";
+    }
 }
