@@ -105,13 +105,12 @@ public class UserController {
         return ResponseEntity.status(404).body("Error, no se ha encontrado usuario registrado.");
     }
 
-    @GetMapping("/exit/{id}")
-    public ResponseEntity<?> exitLoginUser(@PathVariable Integer id){
-        User user = service.findUserById(id);
-        if(!user.isActive()){
-            return ResponseEntity.ok("El usuario "+user.getName()+" no se encuentra activo");
+    @GetMapping("/exit")
+    public ResponseEntity<?> exitLoginUser(){
+        if(!service.userActive().isActive()){
+            return ResponseEntity.ok("Error, no se encuentra ningun usuario activo");
         }
-        service.exitLogin(user);
-        return ResponseEntity.ok("El usuario "+user.getName()+" ha cerrado sesion");
+        service.exitLogin(service.userActive());
+        return ResponseEntity.ok("El usuario "+service.userActive().getName()+" ha cerrado sesion");
     }
 }
