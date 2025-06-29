@@ -2,6 +2,7 @@ package Proyecto.UltraNet.Controller;
 
 import Proyecto.UltraNet.Model.Hardware;
 import Proyecto.UltraNet.Service.HardwareService;
+import Proyecto.UltraNet.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +14,20 @@ import java.util.List;
 public class HardwareController {
 
     @Autowired
-    HardwareService service;
+    UserService userService;
+
+    @Autowired
+    HardwareService hardwareService;
 
     @GetMapping
     public ResponseEntity<List<Hardware>> getAll() {
-        List<Hardware> hardwareList = service.getAll();
+        List<Hardware> hardwareList = hardwareService.getAll();
         return ResponseEntity.ok(hardwareList);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<?> getHardware(@PathVariable Integer id) {
-        Hardware hardware = service.searchHardware(id);
+        Hardware hardware = hardwareService.searchHardware(id);
         if (hardware == null) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + id);
         }
@@ -32,17 +36,23 @@ public class HardwareController {
 
     @PostMapping
     public ResponseEntity<?> postHardware(@RequestBody Hardware hardware) {
-        Hardware created = service.addHardware(hardware);
+        if(!userService.userActive().isActive()){
+            return ResponseEntity.status(404).body("Error, no se encuentra usuario activo para realizar esta accion");
+        }
+        if(!userService.userActive().getType().equalsIgnoreCase("Administrador")){
+            return ResponseEntity.ok("El tipo de usuario no tiene permiso para realizar esta acción");
+        }
+        Hardware created = hardwareService.addHardware(hardware);
 
-        if(!service.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
+        if(!hardwareService.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
 
         else{
-            if(service.typeIsMotherBoard(hardware.getType())){
+            if(hardwareService.typeIsMotherBoard(hardware.getType())){
 
-                if(!service.motherGraphics(hardware.getPciePort())){return ResponseEntity.status(404).body("Falta un puerto pcie válido");}
-                if(!service.motherStorage(hardware.getStoragePort())){return ResponseEntity.status(404).body("Falta un almacenamiento válido");}
-                if(!service.motherRam(hardware.getRamPort())){return ResponseEntity.status(404).body("Falta una RAM valida");}
-                if( !(service.motherCpuAMD(hardware.getCpuPort())) && !(service.motherCpuIntel(hardware.getCpuPort())) ){
+                if(!hardwareService.motherGraphics(hardware.getPciePort())){return ResponseEntity.status(404).body("Falta un puerto pcie válido");}
+                if(!hardwareService.motherStorage(hardware.getStoragePort())){return ResponseEntity.status(404).body("Falta un almacenamiento válido");}
+                if(!hardwareService.motherRam(hardware.getRamPort())){return ResponseEntity.status(404).body("Falta una RAM valida");}
+                if( !(hardwareService.motherCpuAMD(hardware.getCpuPort())) && !(hardwareService.motherCpuIntel(hardware.getCpuPort())) ){
                     return ResponseEntity.status(404).body("Falta un socket válido");
                 }
 
@@ -56,24 +66,30 @@ public class HardwareController {
 
     @PutMapping
     public ResponseEntity<?> putHardware(@RequestBody Hardware hardware) {
+        if(!userService.userActive().isActive()){
+            return ResponseEntity.status(404).body("Error, no se encuentra usuario activo para realizar esta accion");
+        }
+        if(!userService.userActive().getType().equalsIgnoreCase("Administrador")){
+            return ResponseEntity.ok("El tipo de usuario no tiene permiso para realizar esta acción");
+        }
         if (hardware.getId() == null) {
             return ResponseEntity.status(400).body("El ID es obligatorio para actualizar hardware.");
         }
-        if (!service.existsById(hardware.getId())) {
+        if (!hardwareService.existsById(hardware.getId())) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + hardware.getId());
         }
-        if (service.existByName(hardware.getName())){
+        if (hardwareService.existByName(hardware.getName())){
             return ResponseEntity.status(400).body("cambie el nombre que esta repetido");
         }
-        if(!service.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
-        Hardware updated = service.putHardware(hardware);
+        if(!hardwareService.typeIsCorrect(hardware.getType())){return ResponseEntity.status(404).body("Falta un type válido");}
+        Hardware updated = hardwareService.putHardware(hardware);
 
-        if(service.typeIsMotherBoard(hardware.getType())){
+        if(hardwareService.typeIsMotherBoard(hardware.getType())){
 
-            if(!service.motherGraphics(hardware.getPciePort())){return ResponseEntity.status(404).body("Falta un puerto pcie válido");}
-            if(!service.motherStorage(hardware.getStoragePort())){return ResponseEntity.status(404).body("Falta un almacenamiento válido");}
-            if(!service.motherRam(hardware.getRamPort())){return ResponseEntity.status(404).body("Falta una RAM valida");}
-            if( !(service.motherCpuAMD(hardware.getCpuPort())) && !(service.motherCpuIntel(hardware.getCpuPort())) ){
+            if(!hardwareService.motherGraphics(hardware.getPciePort())){return ResponseEntity.status(404).body("Falta un puerto pcie válido");}
+            if(!hardwareService.motherStorage(hardware.getStoragePort())){return ResponseEntity.status(404).body("Falta un almacenamiento válido");}
+            if(!hardwareService.motherRam(hardware.getRamPort())){return ResponseEntity.status(404).body("Falta una RAM valida");}
+            if( !(hardwareService.motherCpuAMD(hardware.getCpuPort())) && !(hardwareService.motherCpuIntel(hardware.getCpuPort())) ){
                 return ResponseEntity.status(404).body("Falta un socket válido");
             }
 
@@ -85,20 +101,32 @@ public class HardwareController {
 
     @PatchMapping
     public ResponseEntity<?> patchHardware(@RequestBody Hardware hardware) {
+        if(!userService.userActive().isActive()){
+            return ResponseEntity.status(404).body("Error, no se encuentra usuario activo para realizar esta accion");
+        }
+        if(!userService.userActive().getType().equalsIgnoreCase("Administrador")){
+            return ResponseEntity.ok("El tipo de usuario no tiene permiso para realizar esta acción");
+        }
         if (hardware.getId() == null) {
             return ResponseEntity.status(400).body("El ID es obligatorio para editar hardware.");
         }
-        if (!service.existsById(hardware.getId())) {
+        if (!hardwareService.existsById(hardware.getId())) {
             return ResponseEntity.status(404).body("No se encontró hardware con ID " + hardware.getId());
         }
-        Hardware patched = service.patchHardware(hardware);
-        if(!service.existByName(hardware.getName())){ return ResponseEntity.status(400).body("Verifique que el nombre no este repetido");}else{
+        Hardware patched = hardwareService.patchHardware(hardware);
+        if(!hardwareService.existByName(hardware.getName())){ return ResponseEntity.status(400).body("Verifique que el nombre no este repetido");}else{
         return ResponseEntity.ok(patched);}
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteHardware(@PathVariable Integer id) {
-        boolean deleted = service.delete(id);
+        if(!userService.userActive().isActive()){
+            return ResponseEntity.status(404).body("Error, no se encuentra usuario activo para realizar esta accion");
+        }
+        if(!userService.userActive().getType().equalsIgnoreCase("Administrador")){
+            return ResponseEntity.ok("El tipo de usuario no tiene permiso para realizar esta acción");
+        }
+        boolean deleted = hardwareService.delete(id);
         if (deleted) {
             return ResponseEntity.ok("Hardware con ID " + id + " eliminado con éxito.");
         }

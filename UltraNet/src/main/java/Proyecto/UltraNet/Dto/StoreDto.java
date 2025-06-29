@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StoreDto {
-    private String userEmail;
     private List<Integer> hardwareId = new ArrayList<>();
     private LocalDate saleDate;
     private List<Integer> quantity = new ArrayList<>();
@@ -13,19 +12,10 @@ public class StoreDto {
     public StoreDto() {
     }
 
-    public StoreDto(String userEmail, List<Integer> hardwareId, LocalDate saleDate, List<Integer> quantity) {
-        this.userEmail = userEmail;
+    public StoreDto(List<Integer> hardwareId, LocalDate saleDate, List<Integer> quantity) {
         this.hardwareId = hardwareId;
         this.saleDate = saleDate;
         this.quantity = quantity;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public List<Integer> getHardwareId() {

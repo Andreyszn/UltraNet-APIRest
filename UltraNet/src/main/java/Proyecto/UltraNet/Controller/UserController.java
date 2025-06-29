@@ -1,5 +1,6 @@
 package Proyecto.UltraNet.Controller;
 
+import Proyecto.UltraNet.Dto.LoginDto;
 import Proyecto.UltraNet.Dto.UserDto;
 import Proyecto.UltraNet.Model.User;
 import Proyecto.UltraNet.Service.UserService;
@@ -42,7 +43,7 @@ public class UserController {
         }
 
         if(service.isInvalidType(userDto.getType())){
-            return ResponseEntity.status(400).body("Error: El espacio type debe ser igual a client o Administrator");
+            return ResponseEntity.status(400).body("Error: El espacio type debe ser igual a client o Administrador");
         }
 
         User createdUser = service.addUser(userDto);
@@ -75,6 +76,9 @@ public class UserController {
         if (!service.userExistsById(user.getId())) {
             return ResponseEntity.status(404).body("Error: No se encuentra un usuario con el ID " + user.getId());
         }
+        if(service.isInvalidType(user.getType())){
+            return ResponseEntity.status(400).body("Error: El espacio type debe rellenado con Client o Administrator");
+        }
         User editedUser = service.editUser(user);
         return ResponseEntity.ok(editedUser);
     }
@@ -87,5 +91,27 @@ public class UserController {
         } else {
             return ResponseEntity.status(404).body("No se encuentra un usuario con el ID " + id);
         }
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
+        if(service.userActive().isActive()){
+            return ResponseEntity.ok("Error, Ya el usuario "+service.userActive().getName()+" se encuentra activo");
+        }
+        User userlogin = service.loginByEmail(loginDto);
+        if(loginDto.getPasswordUser().equals(userlogin.getPassword())){
+            return ResponseEntity.ok("Bienvenido "+userlogin.getName());
+        }
+        return ResponseEntity.status(404).body("Error, no se ha encontrado usuario registrado.");
+    }
+
+    @GetMapping("/exit/{id}")
+    public ResponseEntity<?> exitLoginUser(@PathVariable Integer id){
+        User user = service.findUserById(id);
+        if(!user.isActive()){
+            return ResponseEntity.ok("El usuario "+user.getName()+" no se encuentra activo");
+        }
+        service.exitLogin(user);
+        return ResponseEntity.ok("El usuario "+user.getName()+" ha cerrado sesion");
     }
 }

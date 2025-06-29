@@ -1,5 +1,6 @@
 package Proyecto.UltraNet.Service;
 
+import Proyecto.UltraNet.Dto.LoginDto;
 import Proyecto.UltraNet.Dto.UserDto;
 import Proyecto.UltraNet.Model.User;
 import Proyecto.UltraNet.Repository.UserRepositoryJpa;
@@ -60,7 +61,7 @@ public class UserService {
     }
 
     public boolean isInvalidType(String type){
-        if(type.equalsIgnoreCase("Client") || type.equalsIgnoreCase("Administrator")){
+        if(type.equalsIgnoreCase("Client") || type.equalsIgnoreCase("Administrador")){
             return false;
         }
         return true;
@@ -85,5 +86,34 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    public User loginByEmail(LoginDto loginDto){
+        User activateUser = repository.findByEmail(loginDto.getEmailUser());
+        activateUser.setActive(true);
+        repository.save(activateUser);
+        return activateUser;
+    }
+
+    public void exitLogin(User user){
+        User diactivateUser = repository.findByEmail(user.getEmail());
+        diactivateUser.setActive(false);
+        repository.save(diactivateUser);
+    }
+
+    public boolean existsByPassword(String password){
+        return repository.existsByPassword(password);
+    }
+
+    public User userActive(){
+        List<User> users = getAllUsers();
+        if(!users.isEmpty()){
+            for(int element=0;element<users.size();element++){
+                if (users.get(element).isActive()){
+                    return users.get(element);
+                }
+            }
+        }
+        return new User();
     }
 }

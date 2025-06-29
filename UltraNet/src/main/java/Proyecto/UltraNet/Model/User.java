@@ -12,6 +12,7 @@ public class User {
     private String name;
     private String email;
     private String type;
+    private boolean active;
     private String password;
 
     public User() {
@@ -22,6 +23,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.type = type;
+        active = false;
         this.password = password;
     }
 
@@ -55,6 +57,14 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getPassword() {

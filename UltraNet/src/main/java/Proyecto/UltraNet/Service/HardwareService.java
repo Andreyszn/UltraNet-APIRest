@@ -39,9 +39,9 @@ public class HardwareService {
                   return repository.save(hardware);
               }
           }
-          return null;
+          return new Hardware();
       }
-      return null;
+      return new Hardware();
         //return repository.save(hardware);
     }
 

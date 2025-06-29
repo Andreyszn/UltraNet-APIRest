@@ -28,6 +28,9 @@ public class StoreController {
 
     @PostMapping
     public ResponseEntity<?> postStore(@RequestBody StoreDto storeDto){
+        if(!service.userActive().isActive()){
+            return ResponseEntity.status(404).body("Error, no se encuentra usuario activo para realizar esta accion");
+        }
         List<Hardware> listHardware = service.getListHardwareBuy(storeDto.getHardwareId());
         if (service.validationQuantity(listHardware, storeDto.getQuantity())) {
             return ResponseEntity.ok(service.add(storeDto));
@@ -37,6 +40,12 @@ public class StoreController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Integer id){
+        if(!service.userActive().isActive()){
+            return ResponseEntity.status(404).body("Error, no se encuentra usuario activo para realizar esta accion");
+        }
+        if(!service.userActive().getType().equalsIgnoreCase("Administrador")){
+            return ResponseEntity.ok("El tipo de usuario no tiene permiso para realizar esta acción");
+        }
         Store storeLocal = service.getStoreById(id);
         if (storeLocal != null){
             List<Integer> idHardwareList = service.getIdHardwareList(storeLocal.getHardware());

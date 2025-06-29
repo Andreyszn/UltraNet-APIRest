@@ -32,7 +32,7 @@ public class StoreService {
     }
 
     public Store add(StoreDto storeDto) {
-        User user = userService.findUserByEmail(storeDto.getUserEmail());
+        User user = userService.userActive();
         List<Hardware> hardware = getListHardwareBuy(storeDto.getHardwareId());
         List<Integer> quantities = storeDto.getQuantity();
 
@@ -167,5 +167,9 @@ public class StoreService {
                             "----------------------------";
 
             return invoice;
+    }
+
+    public User userActive(){
+        return userService.userActive();
     }
 }
