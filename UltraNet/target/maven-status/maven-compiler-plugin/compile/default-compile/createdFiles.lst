@@ -1,0 +1,16 @@
+Proyecto\UltraNet\Dto\LoginDto.class
+Proyecto\UltraNet\Service\UserService.class
+Proyecto\UltraNet\Controller\StoreController.class
+Proyecto\UltraNet\Repository\StoreJpaRepository.class
+Proyecto\UltraNet\Dto\StoreDto.class
+Proyecto\UltraNet\Model\Store.class
+Proyecto\UltraNet\Controller\HardwareController.class
+Proyecto\UltraNet\Model\Hardware.class
+Proyecto\UltraNet\Repository\HardwareRepositoryJpa.class
+Proyecto\UltraNet\Repository\UserRepositoryJpa.class
+Proyecto\UltraNet\Dto\UserDto.class
+Proyecto\UltraNet\Service\HardwareService.class
+Proyecto\UltraNet\Controller\UserController.class
+Proyecto\UltraNet\Model\User.class
+Proyecto\UltraNet\Service\StoreService.class
+Proyecto\UltraNet\UltraNetApplication.class
