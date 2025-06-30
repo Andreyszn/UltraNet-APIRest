@@ -94,14 +94,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
         if(service.userActive().isActive()){
             return ResponseEntity.ok("Error, Ya el usuario "+service.userActive().getName()+" se encuentra activo");
         }
         User userlogin = service.loginByEmail(loginDto);
         if(loginDto.getPasswordUser().equals(userlogin.getPassword())){
-            return ResponseEntity.ok("Bienvenido "+userlogin.getName());
+            return ResponseEntity.ok(userlogin);
         }
         return ResponseEntity.status(404).body("Error, no se ha encontrado usuario registrado.");
     }

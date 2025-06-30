@@ -65,4 +65,9 @@ public class StoreController {
         }
         return ResponseEntity.status(404).body("No se encontró la factura con ese id.");
     }
+
+    @GetMapping("/listHardware")
+    public ResponseEntity<?> getListHardware(){
+        return ResponseEntity.ok(service.getAllHardware());
+    }
 }
